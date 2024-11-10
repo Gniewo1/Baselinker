@@ -33,6 +33,7 @@ const FetchData = () => {
       {orders.map(order => (
         <div key={order.order_id} className="order-card">
           <h3>Order ID: {order.order_id}</h3>
+          <p>Status: {order.order_status}</p>
           <p>Date: {new Date(order.order_date).toLocaleString()}</p>
           <p>Customer: {order.customer_name}</p>
           <p>Email: {order.customer_email}</p>
@@ -40,7 +41,7 @@ const FetchData = () => {
           <p>Address: {order.shipping_address}, {order.shipping_city}, {order.shipping_postcode}, {order.shipping_country}</p>
           <p>Payment Method: {order.payment_method}</p>
           <p>Total Amount: {order.total_amount} {order.currency}</p>
-          {/* Additional order details can be added here */}
+          
         </div>
       ))}
     </div>

@@ -68,6 +68,13 @@ def fetch_orders(request):
         'method': 'getOrders',
     }
 
+    status_mapping = {
+        138978: "New order",
+        138979: "Ready to ship",
+        138980: "Shipped",
+        138981: "Cancelled",
+    }
+
     # Send POST request to Baselinker API
     response = requests.post(url, data=payload)
     
@@ -75,29 +82,34 @@ def fetch_orders(request):
     if response.status_code == 200:
         data = response.json()
         print(data)
+        
         # Loop over each order in the response and save it to the database
         for order_data in data.get('orders', []):
             unix_timestamp = order_data['date_add']
+            order_status_id = order_data.get('order_status_id', None)
+            order_status = status_mapping.get(order_status_id, "Unknown")
+
 
             Order.objects.update_or_create(
-            order_id=order_data['order_id'],
-            defaults={
-                'order_date': datetime.fromtimestamp(unix_timestamp),
-                'customer_name': order_data['user_login'],
-                'customer_phone': order_data['phone'],
-                'customer_email': order_data['email'],
-                'shipping_address': order_data['delivery_address'],
-                'shipping_city': order_data['delivery_city'],
-                'shipping_postcode': order_data['delivery_postcode'],
-                'shipping_country': order_data['delivery_country'],
-                'payment_method': order_data['payment_method'],
-                'total_amount': order_data['payment_done'],
-                'currency': order_data['currency'],
-                'items': [{
-                    'product_id': item['product_id'],
-                    'name': item['name'],
-                    'price': item['price_brutto'],
-                    'quantity': item['quantity'],
+                order_id=order_data['order_id'],
+                defaults={
+                    'order_date': datetime.fromtimestamp(unix_timestamp),
+                    'customer_name': order_data['user_login'],
+                    'customer_phone': order_data['phone'],
+                    'customer_email': order_data['email'],
+                    'shipping_address': order_data['delivery_address'],
+                    'shipping_city': order_data['delivery_city'],
+                    'shipping_postcode': order_data['delivery_postcode'],
+                    'shipping_country': order_data['delivery_country'],
+                    'payment_method': order_data['payment_method'],
+                    'total_amount': order_data['payment_done'],
+                    'currency': order_data['currency'],
+                    'order_status': order_status, 
+                    'items': [{
+                        'product_id': item['product_id'],
+                        'name': item['name'],
+                        'price': item['price_brutto'],
+                        'quantity': item['quantity'],
                     } for item in order_data['products']]
                 }
             )
