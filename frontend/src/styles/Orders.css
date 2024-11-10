@@ -14,3 +14,9 @@
     max-width: 400px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   }
+
+  .invisible-container {
+    height: 80px; /* Adjust the height as needed */
+    opacity: 0; /* Makes it invisible but still takes up space */
+    /* Alternatively, use visibility: hidden if you prefer */
+}
