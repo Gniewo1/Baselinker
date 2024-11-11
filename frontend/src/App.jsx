@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import Login from './components/Login'
 import Register from './components/Register'
@@ -8,6 +6,7 @@ import Home from './components/Home'
 import Navbar from './components/Navbar'
 import OrderForm from './components/OrderForm'
 import FetchData from './components/FetchData'
+import Faktura from './components/Faktura'
 import {Routes, Route, useLocation, Navigate} from 'react-router-dom'
 import axios from 'axios'
 
@@ -58,6 +57,7 @@ function App() {
      <Route path="/login" element={isAuthenticated ? <Navigate to="/" /> : <Login />} />
      <Route path="/order" element={<OrderForm/>} />
      <Route path="/data" element={<FetchData/>} />
+     <Route path="/faktura" element={<Faktura/>} />
     </Routes>
     </>
   )

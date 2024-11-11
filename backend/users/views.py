@@ -10,6 +10,10 @@ import requests
 from .models import Order
 from datetime import datetime
 from django.http import JsonResponse
+import re
+import fitz
+from django.views.decorators.csrf import csrf_exempt
+from django.core.files.storage import default_storage
 
 class RegisterAPI(generics.GenericAPIView):
     serializer_class = RegisterSerializer
@@ -123,3 +127,27 @@ def fetch_orders(request):
 def get_all_orders(request):
     orders = Order.objects.all().values()
     return JsonResponse(list(orders), safe=False)
+
+
+def extract_text_from_pdf(pdf_path):
+    with fitz.open(pdf_path) as pdf_file:
+        text = ""
+        for page_num in range(pdf_file.page_count):
+            page = pdf_file[page_num]
+            text += page.get_text()
+    return text
+
+def extract_amount_before_total(text):
+    match = re.search(r"(\d+,\d{2})\s*Razem: PLN:", text)
+    return match.group(1) if match else None
+
+@csrf_exempt
+def process_pdf(request):
+    if request.method == 'POST' and request.FILES.get('pdf'):
+        pdf_file = request.FILES['pdf']
+        path = default_storage.save('tmp/' + pdf_file.name, pdf_file)
+        text = extract_text_from_pdf(path)
+        amount = extract_amount_before_total(text)
+        return JsonResponse({'text': text, 'amount': amount})
+
+    return JsonResponse({'error': 'Invalid request'}, status=400)

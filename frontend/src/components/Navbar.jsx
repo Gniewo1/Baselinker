@@ -60,6 +60,9 @@ const Navbar = () => {
               <Link to="/data">Update</Link>
             </li>
             <li>
+              <Link to="/faktura">Faktura</Link>
+            </li>
+            <li>
               <button className="btn" onClick={handleLogout}>Logout</button>
             </li>
           </>

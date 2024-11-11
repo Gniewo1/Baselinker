@@ -1,6 +1,6 @@
 from django.urls import path
 from knox import views as knox_views
-from .views import RegisterAPI, UserCheckView, LoginAPI, CreateOrderView, fetch_orders, get_all_orders
+from .views import RegisterAPI, UserCheckView, LoginAPI, CreateOrderView, fetch_orders, get_all_orders, process_pdf
 
 urlpatterns = [
     path('api/register/', RegisterAPI.as_view(), name='register'),
@@ -10,4 +10,6 @@ urlpatterns = [
     path('api/orders/', CreateOrderView.as_view(), name='create_order'),
     path('api/fetch-orders/', fetch_orders, name='fetch_orders'),
     path('api/show-orders/', get_all_orders, name='get_all_orders'),
+    path('api/process-pdf/', process_pdf, name='process_pdf'),
+
 ]
