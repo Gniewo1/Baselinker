@@ -137,9 +137,23 @@ def extract_text_from_pdf(pdf_path):
             text += page.get_text()
     return text
 
-def extract_amount_before_total(text):
+def extract_DHL(text):
     match = re.search(r"(\d+,\d{2})\s*Razem: PLN:", text)
     return match.group(1) if match else None
+
+def extract_Fedex(text):
+    match = re.search(r"(\d+,\d{2})\s*Do zapłaty:", text)
+    return match.group(1) if match else None
+
+def extract_GLS(text):
+    match = re.search(r"(\d+,\d{2})\s*Kwota należności ogółem:", text)
+    return match.group(1) if match else None
+
+def extract_UPS(text):
+    match = re.search(r"Razem wartość brutto do zapłaty\s+PLN\s+(\d+,\d+)", text)
+    return match.group(1) if match else None
+
+
 
 @csrf_exempt
 def process_pdf(request):
@@ -147,7 +161,19 @@ def process_pdf(request):
         pdf_file = request.FILES['pdf']
         path = default_storage.save('tmp/' + pdf_file.name, pdf_file)
         text = extract_text_from_pdf(path)
-        amount = extract_amount_before_total(text)
+        choice = request.POST.get('choice')
+        if not choice:
+            return JsonResponse({'error': 'Choice parameter is missing'}, status=400)
+        match choice:
+            case "DHL":
+                amount = extract_DHL(text)
+            case "Fedex":
+                amount = extract_Fedex(text)
+            case "GLS":
+                amount = extract_GLS(text)
+            case "UPS":
+                amount = extract_UPS(text)
+        
         return JsonResponse({'text': text, 'amount': amount})
 
     return JsonResponse({'error': 'Invalid request'}, status=400)

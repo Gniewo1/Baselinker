@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
-import Navbar from './Navbar'
+import Navbar from './Navbar';
 
 function Faktura() {
     const [file, setFile] = useState(null);
+    const [choice, setChoice] = useState(""); // State for choice selection
     const [result, setResult] = useState({});
 
     const handleFileChange = (e) => {
         setFile(e.target.files[0]);
+    };
+
+    const handleChoiceChange = (e) => {
+        setChoice(e.target.value);
     };
 
     const handleSubmit = async (e) => {
@@ -15,9 +20,14 @@ function Faktura() {
             alert("Please select a file.");
             return;
         }
+        if (!choice) {
+            alert("Please select a courier.");
+            return;
+        }
 
         const formData = new FormData();
         formData.append('pdf', file);
+        formData.append('choice', choice); // Append choice to form data
 
         try {
             const response = await fetch('http://localhost:8000/api/process-pdf/', {
@@ -42,12 +52,19 @@ function Faktura() {
             <h1>Upload PDF</h1>
             <form onSubmit={handleSubmit}>
                 <input type="file" accept="application/pdf" onChange={handleFileChange} />
+
+                <select value={choice} onChange={handleChoiceChange}>
+                    <option value="">Select Courier</option>
+                    <option value="DHL">DHL</option>
+                    <option value="Fedex">Fedex</option>
+                    <option value="GLS">GLS</option>
+                    <option value="UPS">UPS</option>
+                </select>
+
                 <button type="submit">Upload</button>
             </form>
             {result.text && (
                 <div>
-                    {/* <h2>Extracted Text</h2>
-                    <p>{result.text}</p> */}
                     <h3>Razem PLN:</h3>
                     <p>{result.amount || "Not found"}</p>
                 </div>
