@@ -139,19 +139,58 @@ def extract_text_from_pdf(pdf_path):
 
 def extract_DHL(text):
     match = re.search(r"(\d+,\d{2})\s*Razem: PLN:", text)
-    return match.group(1) if match else None
+    match2 = re.search(r"Numer dokumentu:\s*(\S+)", text)
+    if match:
+        PLN =  match.group(1)
+    else:
+        PLN = "Not found"
+    if match2:
+        ID = match2.group(1)
+    else:
+        ID = "Not found"
+    return PLN, ID
 
 def extract_Fedex(text):
     match = re.search(r"(\d+,\d{2})\s*Do zapłaty:", text)
-    return match.group(1) if match else None
+    match2 = re.search(r"Faktura do zestawienia zbiorczego nr\s+(\S+)", text)
+    if match:
+        PLN =  match.group(1)
+    else:
+        PLN = "Not found"
+    if match2:
+        ID = match2.group(1)
+    else:
+        ID = "Not found"
+    return PLN, ID
 
 def extract_GLS(text):
     match = re.search(r"(\d+,\d{2})\s*Kwota należności ogółem:", text)
-    return match.group(1) if match else None
+    match2 = re.search(
+    r"oraz numer Klienta widoczny na fakturze\.\s*(\d+)", 
+    text
+)
+    if match:
+        PLN =  match.group(1)
+    else:
+        PLN = "Not found"
+    if match2:
+        ID = match2.group(1)
+    else:
+        ID = "Not found"
+    return PLN, ID
 
 def extract_UPS(text):
     match = re.search(r"Razem wartość brutto do zapłaty\s+PLN\s+(\d+,\d+)", text)
-    return match.group(1) if match else None
+    match2 = re.search(r"Nr dokumentu:\s*(\d+)", text)
+    if match:
+        PLN =  match.group(1)
+    else:
+        PLN = "Not found"
+    if match2:
+        ID = match2.group(1)
+    else:
+        ID = "Not found"
+    return PLN, ID
 
 
 

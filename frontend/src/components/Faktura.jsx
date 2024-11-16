@@ -65,8 +65,10 @@ function Faktura() {
             </form>
             {result.text && (
                 <div>
-                    <h3>Razem PLN:</h3>
-                    <p>{result.amount || "Not found"}</p>
+                    <h3>Cost:</h3>
+                    <p>{result.amount[0] || "Not found"}</p>
+                    <h3>Document Number:</h3>
+                    <p>{result.amount[1] || "Not found"}</p>
                 </div>
             )}
         </div>
