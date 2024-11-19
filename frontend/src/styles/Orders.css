@@ -1,22 +1,38 @@
 .orders-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    padding: 1rem;
-  }
-  
-  .order-card {
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 1rem;
-    width: 100%;
-    max-width: 400px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  }
+  display: flex;
+  flex-wrap: wrap; /* Allows wrapping to the next row */
+  gap: 1rem; /* Space between cards */
+  justify-content: center; /* Centers the cards if fewer than 3 */
+  padding: 1rem; /* Padding around the container */
+}
 
-  .invisible-container {
-    height: 80px; /* Adjust the height as needed */
-    opacity: 0; /* Makes it invisible but still takes up space */
-    /* Alternatively, use visibility: hidden if you prefer */
+.order-card {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 1rem;
+  width: 400px; /* Static width */
+  height: 480px; /* Static height */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box; /* Include padding and border in width calculation */
+  text-align: center;
+}
+
+.invisible-container {
+  height: 80px; /* Adjust the height as needed */
+  opacity: 0; /* Makes it invisible but still takes up space */
+}
+
+/* Responsive Behavior */
+@media (max-width: 768px) {
+  .orders-container {
+      justify-content: center; /* Keeps cards centered on smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .order-card {
+      width: 100%; /* Full width for small screens */
+      height: auto; /* Allow height to adjust for small screens */
+  }
 }

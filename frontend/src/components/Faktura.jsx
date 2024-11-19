@@ -61,7 +61,7 @@ function Faktura() {
                     <option value="UPS">UPS</option>
                 </select>
 
-                <button type="submit">Upload</button>
+                <button type="submit" >Upload</button>
             </form>
             {result.text && (
                 <div>

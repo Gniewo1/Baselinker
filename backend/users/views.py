@@ -13,6 +13,7 @@ from django.http import JsonResponse
 import re
 import fitz
 from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view
 from django.core.files.storage import default_storage
 
 class RegisterAPI(generics.GenericAPIView):
@@ -216,3 +217,20 @@ def process_pdf(request):
         return JsonResponse({'text': text, 'amount': amount})
 
     return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
+@api_view(['PUT'])
+def update_order_status(request, order_id):
+    try:
+        order = Order.objects.get(order_id=order_id)
+        new_status = request.data.get('order_status')
+
+        if new_status:
+            order.order_status = new_status
+            order.save()
+            return Response({'message': 'Order status updated successfully.'}, status=200)
+        else:
+            return Response({'error': 'Order status not provided.'}, status=400)
+
+    except Order.DoesNotExist:
+        return Response({'error': 'Order not found.'}, status=404)

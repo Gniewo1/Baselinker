@@ -1,18 +1,19 @@
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Navbar from './Navbar';
-import React, { useEffect, useState } from 'react';
 import '../styles/Orders.css';
 
 const FetchData = () => {
     const [orders, setOrders] = useState([]);
-    const [statusFilter, setStatusFilter] = useState(''); // State to store selected status
+    const [statusFilter, setStatusFilter] = useState('');
+    const [statusChanges, setStatusChanges] = useState({}); // Tracks selected statuses for orders
 
     useEffect(() => {
         fetch('http://localhost:8000/api/show-orders/')
-          .then(response => response.json())
-          .then(data => setOrders(data))
-          .catch(error => console.error('Error fetching orders:', error));
-      }, []);
+            .then(response => response.json())
+            .then(data => setOrders(data))
+            .catch(error => console.error('Error fetching orders:', error));
+    }, []);
 
     const fetchOrders = async () => {
         try {
@@ -26,8 +27,47 @@ const FetchData = () => {
         window.location.reload();
     };
 
-    // Filter orders based on selected status
-    const filteredOrders = orders.filter(order => 
+    const updateOrderStatus = async (orderId) => {
+        const newStatus = statusChanges[orderId];
+        if (!newStatus) {
+            alert('Please select a status to update.');
+            return;
+        }
+
+        try {
+            const response = await axios.put(`http://localhost:8000/api/update-order-status/${orderId}/`, {
+                order_status: newStatus,
+            });
+            console.log(response.data);
+            alert(response.data.message);
+
+            // Update the order status locally
+            setOrders(prevOrders =>
+                prevOrders.map(order =>
+                    order.order_id === orderId ? { ...order, order_status: newStatus } : order
+                )
+            );
+
+            // Clear the selected status after successful update
+            setStatusChanges(prevChanges => {
+                const newChanges = { ...prevChanges };
+                delete newChanges[orderId];
+                return newChanges;
+            });
+        } catch (error) {
+            console.error('Error updating order status:', error);
+            alert('Failed to update order status.');
+        }
+    };
+
+    const handleStatusChange = (orderId, newStatus) => {
+        setStatusChanges(prevChanges => ({
+            ...prevChanges,
+            [orderId]: newStatus,
+        }));
+    };
+
+    const filteredOrders = orders.filter(order =>
         statusFilter === '' || order.order_status === statusFilter
     );
 
@@ -41,9 +81,9 @@ const FetchData = () => {
             {/* Status Filter Dropdown */}
             <div className="filter-container">
                 <label htmlFor="statusFilter">Filter by Status: </label>
-                <select 
-                    id="statusFilter" 
-                    value={statusFilter} 
+                <select
+                    id="statusFilter"
+                    value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value)}
                 >
                     <option value="">All</option>
@@ -51,7 +91,6 @@ const FetchData = () => {
                     <option value="Ready to ship">Ready to ship</option>
                     <option value="Shipped">Shipped</option>
                     <option value="Cancelled">Cancelled</option>
-                    {/* Add more options based on your available statuses */}
                 </select>
             </div>
 
@@ -59,18 +98,36 @@ const FetchData = () => {
                 {filteredOrders.map(order => (
                     <div key={order.order_id} className="order-card">
                         <h3>Order ID: {order.order_id}</h3>
-                        <p>Status: {order.order_status}</p>
-                        <p>Date: {new Date(order.order_date).toLocaleString()}</p>
-                        <p>Customer: {order.customer_name}</p>
-                        <p>Email: {order.customer_email}</p>
-                        <p>Phone: {order.customer_phone}</p>
-                        <p>Address: {order.shipping_address}, {order.shipping_city}, {order.shipping_postcode}, {order.shipping_country}</p>
-                        <p>Payment Method: {order.payment_method}</p>
-                        <p>Total Amount: {order.total_amount} {order.currency}</p>
+                        
+                        <div className="status-update-container">
+                            <select
+                                value={statusChanges[order.order_id] || order.order_status}
+                                onChange={(e) => handleStatusChange(order.order_id, e.target.value)}
+                            >
+                                <option value="New order">New order</option>
+                                <option value="Ready to ship">Ready to ship</option>
+                                <option value="Shipped">Shipped</option>
+                                <option value="Cancelled">Cancelled</option>
+                            </select>
+                            <button
+                                onClick={() => updateOrderStatus(order.order_id)}
+                                style={{ marginLeft: '10px', backgroundColor: 'blue', color: 'white' }}
+                            >
+                                Update
+                            </button>
+                        </div>
+                        <p><span style={{ fontWeight: 'bold' }}>Status:</span> {order.order_status}</p>
+                        <p><span style={{ fontWeight: 'bold' }}>Date:</span> {new Date(order.order_date).toLocaleString()}</p>
+                        <p><span style={{ fontWeight: 'bold' }}>Customer:</span> {order.customer_name}</p>
+                        <p><span style={{ fontWeight: 'bold' }}>Email:</span> {order.customer_email}</p>
+                        <p><span style={{ fontWeight: 'bold' }}>Phone:</span> {order.customer_phone}</p>
+                        <p><span style={{ fontWeight: 'bold' }}>Address:</span> {order.shipping_address}, {order.shipping_city}, {order.shipping_postcode}, {order.shipping_country}</p>
+                        <p><span style={{ fontWeight: 'bold' }}>Payment Method:</span> {order.payment_method}</p>
+                        <p><span style={{ fontWeight: 'bold' }}>Total Amount:</span> {order.total_amount} {order.currency}</p>
                     </div>
                 ))}
             </div>
-            
+
             <button onClick={fetchOrders} style={{ backgroundColor: 'blue', color: 'white' }}>Update Orders</button>
         </>
     );
