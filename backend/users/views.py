@@ -221,6 +221,8 @@ def process_pdf(request):
 
 @api_view(['PUT'])
 def update_order_status(request, order_id):
+    api_key = '5006320-5022781-0YBPKCB5LX5JX6WFCCD9U9WN12ORNTVRASTWJNXYLUXRJIGI49PQ8G7URZZ1DDKL'
+    url = 'https://api.baselinker.com/connector.php'
     try:
         order = Order.objects.get(order_id=order_id)
         new_status = request.data.get('order_status')
@@ -228,6 +230,34 @@ def update_order_status(request, order_id):
         if new_status:
             order.order_status = new_status
             order.save()
+
+            match new_status:
+                case "New order":
+                    status_id = 138978
+                case "Ready to ship":
+                    status_id = 138979
+                case "Shipped":
+                    status_id = 138980
+                case "Cancelled":
+                    status_id = 138981
+            headers = {
+                    "X-BLToken": api_key
+                }
+                # Use data instead of json for form data
+            payload = {
+                    "method": "setOrderStatus",
+                    "parameters": f'{{"order_id": "{order_id}", "status_id": "{status_id}"}}'
+            }
+
+            response = requests.post(url, headers=headers, data=payload)
+            if response.status_code == 200:
+                data = response.json()
+                if data.get('status') == 'SUCCESS':
+                    print(f"Order status updated successfully for order ID: {order_id}")
+                else:
+                    print(f"Failed to update order status. Error: {data.get('error_message')}")
+            else:
+                print(f"HTTP Error: {response.status_code}")
             return Response({'message': 'Order status updated successfully.'}, status=200)
         else:
             return Response({'error': 'Order status not provided.'}, status=400)
