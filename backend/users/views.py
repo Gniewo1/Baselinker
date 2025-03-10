@@ -64,7 +64,7 @@ class CreateOrderView(APIView):
     
 def fetch_orders(request):
     # API key and endpoint
-    api_key = '5006320-5022781-0YBPKCB5LX5JX6WFCCD9U9WN12ORNTVRASTWJNXYLUXRJIGI49PQ8G7URZZ1DDKL'
+    api_key = '5009759-5035281-KH4J77RDHMWNLIG9FCTTTVUJNYMDTSXE9MXX42SXH978JTPH2DTLWOAN0PV63F4F'
     url = 'https://api.baselinker.com/connector.php'
 
     # Payload with the method to fetch orders
@@ -221,7 +221,7 @@ def process_pdf(request):
 
 @api_view(['PUT'])
 def update_order_status(request, order_id):
-    api_key = '5006320-5022781-0YBPKCB5LX5JX6WFCCD9U9WN12ORNTVRASTWJNXYLUXRJIGI49PQ8G7URZZ1DDKL'
+    api_key = '5009759-5035281-KH4J77RDHMWNLIG9FCTTTVUJNYMDTSXE9MXX42SXH978JTPH2DTLWOAN0PV63F4F'
     url = 'https://api.baselinker.com/connector.php'
     try:
         order = Order.objects.get(order_id=order_id)

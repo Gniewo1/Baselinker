@@ -1,60 +1,100 @@
 .navbar {
-    background-color: #333;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  background-color: #333;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-    width: 100%;
-    position: fixed; /* Opcjonalne - aby navbar był przypięty u góry */
-    top: 0;
-    left: 0;
-  }
-  
-  .navbar-logo a {
-    color: white;
-    font-size: 24px;
-    text-decoration: none;
-  }
-  
+  width: 100%;
+  position: fixed; /*Opcjonalne - aby navbar był przypięty u góry */
+  top: 0;
+  left: 0;
+
+}
+
+.navbar-logo a {
+  color: white;
+  font-size: 24px;
+  text-decoration: none;
+}
+
+.navbar-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.navbar-links li {
+  display: flex;
+  align-items: center; 
+}
+
+.navbar-links a {
+  color: white;
+  text-decoration: none;
+  padding: 8px 16px;
+  transition: background-color 0.3s;
+  margin-right: 20px;
+}
+
+.navbar-links a:hover {
+  background-color: #555;
+  border-radius: 4px;
+}
+
+.btn {
+  color: white;
+  background-color: #ff6666;
+  border: none;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-right: 20px;
+}
+
+
+.btn:hover {
+  background-color: #ff4c4c;
+}
+
+@media (max-width: 768px) {
   .navbar-links {
-    list-style: none;
-    display: flex;
-    gap: 20px;
+    flex-direction: column;
   }
-  
-  .navbar-links li {
-    display: inline;
-  }
-  
-  .navbar-links a {
-    color: white;
-    text-decoration: none;
-    padding: 8px 16px;
-    transition: background-color 0.3s;
-    margin-right: 20px;
-  }
-  
-  .navbar-links a:hover {
-    background-color: #555;
-    border-radius: 4px;
-  }
-  
-  .btn {
-    color: white;
-    background-color: #ff6666;
-    border: none;
-    padding: 8px 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .btn:hover {
-    background-color: #ff4c4c;
-  }
-  
-  @media (max-width: 768px) {
-    .navbar-links {
-      flex-direction: column;
-    }
-  }
+}
+
+.navbar-search {
+  display: flex; /* Ensures input and button are aligned horizontally */
+  align-items: center; /* Aligns items vertically */
+  width: 100%; /* Adjust width as needed */
+  padding: 10px;
+}
+
+.navbar-search input {
+  flex: 1; /* Ensures the input takes available width */
+  margin-right: 10px; /* Adds space between input and button */
+  padding: 8px; /* Optional: Adjust input padding for better appearance */
+}
+
+.navbar-search button {
+  padding: 8px 16px; /* Adjust button padding */
+}
+
+.navbar-search ul {
+  position: absolute;
+  top: 100%; /* Below the input */
+  left: 0;
+  right: 0;
+  z-index: 10; /* Ensures dropdown is above other elements */
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  max-height: 150px;
+  overflow-y: auto;
+  background: #fff;
+}
+
