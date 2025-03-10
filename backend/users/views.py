@@ -73,11 +73,12 @@ def fetch_orders(request):
         'method': 'getOrders',
     }
 
+    # Nowe konto może mieć inne id
     status_mapping = {
-        138978: "New order",
-        138979: "Ready to ship",
-        138980: "Shipped",
-        138981: "Cancelled",
+        215951: "Nowe zamówienie",
+        215952: "Do wysłania",
+        215953: "Wysłane",
+        215954: "Anulowane",
     }
 
     # Send POST request to Baselinker API
@@ -232,14 +233,14 @@ def update_order_status(request, order_id):
             order.save()
 
             match new_status:
-                case "New order":
-                    status_id = 138978
-                case "Ready to ship":
-                    status_id = 138979
-                case "Shipped":
-                    status_id = 138980
-                case "Cancelled":
-                    status_id = 138981
+                case "Nowe zamówienie":
+                    status_id = 215951
+                case "Do wysłania":
+                    status_id = 215952
+                case "Wysłane":
+                    status_id = 215953
+                case "Anulowane":
+                    status_id = 215954
             headers = {
                     "X-BLToken": api_key
                 }

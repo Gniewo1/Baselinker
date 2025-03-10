@@ -87,10 +87,10 @@ const FetchData = () => {
                     onChange={(e) => setStatusFilter(e.target.value)}
                 >
                     <option value="">All</option>
-                    <option value="New order">New order</option>
-                    <option value="Ready to ship">Ready to ship</option>
-                    <option value="Shipped">Shipped</option>
-                    <option value="Cancelled">Cancelled</option>
+                    <option value="Nowe zamówienie">Nowe zamówienie</option>
+                    <option value="Do wysłania">Do wysłania</option>
+                    <option value="Wysłane">Wysłane</option>
+                    <option value="Anulowane">Anulowane</option>
                 </select>
             </div>
 
@@ -104,31 +104,31 @@ const FetchData = () => {
                                 value={statusChanges[order.order_id] || order.order_status}
                                 onChange={(e) => handleStatusChange(order.order_id, e.target.value)}
                             >
-                                <option value="New order">New order</option>
-                                <option value="Ready to ship">Ready to ship</option>
-                                <option value="Shipped">Shipped</option>
-                                <option value="Cancelled">Cancelled</option>
+                                <option value="Nowe zamówienie">Nowe zamówienie</option>
+                                <option value="Do wysłania">Do wysłania</option>
+                                <option value="Wysłane">Wysłane</option>
+                                <option value="Anulowane">Anulowane</option>
                             </select>
                             <button
                                 onClick={() => updateOrderStatus(order.order_id)}
                                 style={{ marginLeft: '10px', backgroundColor: 'blue', color: 'white' }}
                             >
-                                Update
+                                Aktualizacja
                             </button>
                         </div>
                         <p><span style={{ fontWeight: 'bold' }}>Status:</span> {order.order_status}</p>
-                        <p><span style={{ fontWeight: 'bold' }}>Date:</span> {new Date(order.order_date).toLocaleString()}</p>
-                        <p><span style={{ fontWeight: 'bold' }}>Customer:</span> {order.customer_name}</p>
+                        <p><span style={{ fontWeight: 'bold' }}>Data:</span> {new Date(order.order_date).toLocaleString()}</p>
+                        <p><span style={{ fontWeight: 'bold' }}>Klient:</span> {order.customer_name}</p>
                         <p><span style={{ fontWeight: 'bold' }}>Email:</span> {order.customer_email}</p>
-                        <p><span style={{ fontWeight: 'bold' }}>Phone:</span> {order.customer_phone}</p>
-                        <p><span style={{ fontWeight: 'bold' }}>Address:</span> {order.shipping_address}, {order.shipping_city}, {order.shipping_postcode}, {order.shipping_country}</p>
-                        <p><span style={{ fontWeight: 'bold' }}>Payment Method:</span> {order.payment_method}</p>
-                        <p><span style={{ fontWeight: 'bold' }}>Total Amount:</span> {order.total_amount} {order.currency}</p>
+                        <p><span style={{ fontWeight: 'bold' }}>Telefon:</span> {order.customer_phone}</p>
+                        <p><span style={{ fontWeight: 'bold' }}>Adres:</span> {order.shipping_address}, {order.shipping_city}, {order.shipping_postcode}, {order.shipping_country}</p>
+                        <p><span style={{ fontWeight: 'bold' }}>Metoda płatności:</span> {order.payment_method}</p>
+                        <p><span style={{ fontWeight: 'bold' }}>Koszt:</span> {order.total_amount} {order.currency}</p>
                     </div>
                 ))}
             </div>
 
-            <button onClick={fetchOrders} style={{ backgroundColor: 'blue', color: 'white' }}>Update Orders</button>
+            <button onClick={fetchOrders} style={{ backgroundColor: 'blue', color: 'white' }}>Zaktualizuj zamówienia</button>
         </>
     );
 };

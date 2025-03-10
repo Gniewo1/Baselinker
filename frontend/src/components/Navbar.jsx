@@ -57,13 +57,13 @@ const Navbar = () => {
         {isAuthenticated ? (
           <>
             <li>
-              <Link to="/data">Update</Link>
+              <Link to="/data">Baselinker</Link>
             </li>
             <li>
               <Link to="/faktura">Faktura</Link>
             </li>
             <li>
-              <button className="btn" onClick={handleLogout}>Logout</button>
+              <button className="btn" onClick={handleLogout}>Wyloguj</button>
             </li>
           </>
         ) : (
