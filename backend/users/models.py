@@ -40,7 +40,8 @@ class Order(models.Model):
     # Additional information
     payment_status = models.CharField(max_length=50)
     payment_method = models.CharField(max_length=50)
-    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    total_cost_paid = models.DecimalField(max_digits=10, decimal_places=2)
+    total_cost= models.DecimalField(max_digits=10, decimal_places=2)
     currency = models.CharField(max_length=10)
 
     # Store list of items as JSON

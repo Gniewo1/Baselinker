@@ -86,7 +86,7 @@ const FetchData = () => {
                     value={statusFilter}
                     onChange={(e) => setStatusFilter(e.target.value)}
                 >
-                    <option value="">All</option>
+                    <option value="">Wszystkie</option>
                     <option value="Nowe zamówienie">Nowe zamówienie</option>
                     <option value="Do wysłania">Do wysłania</option>
                     <option value="Wysłane">Wysłane</option>
@@ -123,7 +123,9 @@ const FetchData = () => {
                         <p><span style={{ fontWeight: 'bold' }}>Telefon:</span> {order.customer_phone}</p>
                         <p><span style={{ fontWeight: 'bold' }}>Adres:</span> {order.shipping_address}, {order.shipping_city}, {order.shipping_postcode}, {order.shipping_country}</p>
                         <p><span style={{ fontWeight: 'bold' }}>Metoda płatności:</span> {order.payment_method}</p>
-                        <p><span style={{ fontWeight: 'bold' }}>Koszt:</span> {order.total_amount} {order.currency}</p>
+                        <p><span style={{ fontWeight: 'bold' }}>Łącznie zapłacone:</span> {order.total_cost_paid} {order.currency}</p>
+                        <p><span style={{ fontWeight: 'bold' }}>Łącznie do zapłaty:</span> {order.total_cost} {order.currency}</p>
+                        
                     </div>
                 ))}
             </div>

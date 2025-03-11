@@ -94,7 +94,11 @@ def fetch_orders(request):
             unix_timestamp = order_data['date_add']
             order_status_id = order_data.get('order_status_id', None)
             order_status = status_mapping.get(order_status_id, "Unknown")
+            total_cost = 0
 
+            for item in order_data['products']:
+                price = item['price_brutto']*item['quantity']
+                total_cost+=price
 
             Order.objects.update_or_create(
                 order_id=order_data['order_id'],
@@ -108,7 +112,7 @@ def fetch_orders(request):
                     'shipping_postcode': order_data['delivery_postcode'],
                     'shipping_country': order_data['delivery_country'],
                     'payment_method': order_data['payment_method'],
-                    'total_amount': order_data['payment_done'],
+                    'total_cost_paid': order_data['payment_done'],
                     'currency': order_data['currency'],
                     'order_status': order_status, 
                     'items': [{
@@ -116,7 +120,8 @@ def fetch_orders(request):
                         'name': item['name'],
                         'price': item['price_brutto'],
                         'quantity': item['quantity'],
-                    } for item in order_data['products']]
+                    } for item in order_data['products']],
+                    'total_cost' : total_cost
                 }
             )
         
