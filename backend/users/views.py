@@ -96,6 +96,7 @@ def fetch_orders(request):
             order_status = status_mapping.get(order_status_id, "Unknown")
             total_cost = 0
 
+            # Oblicza całość zapłaty
             for item in order_data['products']:
                 price = item['price_brutto']*item['quantity']
                 total_cost+=price
@@ -142,6 +143,7 @@ def extract_text_from_pdf(pdf_path):
         for page_num in range(pdf_file.page_count):
             page = pdf_file[page_num]
             text += page.get_text()
+    print(text)
     return text
 
 def extract_DHL(text):

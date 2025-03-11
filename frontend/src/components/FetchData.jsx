@@ -80,7 +80,7 @@ const FetchData = () => {
 
             {/* Status Filter Dropdown */}
             <div className="filter-container">
-                <label htmlFor="statusFilter">Filter by Status: </label>
+                <label htmlFor="statusFilter">Filtruj: </label>
                 <select
                     id="statusFilter"
                     value={statusFilter}
